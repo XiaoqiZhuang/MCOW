@@ -100,16 +100,16 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            The proposed framework MCOW generates subjects independently and then composes them together to address attribute-binding, 
-            object-relation, object missing and numeracy problems.
-            We observe that cyclicly inject the subject latents obtained by <b>DDIM Inversion</b> during the compositional generating process 
-            can effectively compose subjects. Also, current image generation on a single subject are always attribute-correct. 
-            Based on these two points, We propose MCOW (<b>M</b>ulti-subjects <b>C</b>yclic-<b>O</b>ne-<b>W</b>ay Diffusion), 
-            a training-free diffuison-based framework to solve compositional image generation challenges.
-          </p>
-          <p>
-            We show that <b>MCOW</b> outperforms other models on various compositional challenges in T2i-CompBench. 
-            We also find that its training-free framework will benefit domain-specific models such as satellite image generation.
+            We propose MCOW (<b>M</b>ulti-subjects <b>C</b>yclic-<b>O</b>ne-<b>W</b>ay Diffusion), 
+            a training-free framework for compositional text-to-image generation that overcomes the limitations of traditional one-shot diffusion models.
+            MCOW follows a Generate-then-Compose paradigm by first generating individual object images and then composing them based on spatial layouts. 
+            Unlike prior layout-to-image methods, MCOW decouples content generation and spatial arrangement, 
+            enabling stronger attribute binding, object localization, and numeracy capabilities. 
+            Experimental results on the T2I-CompBench benchmark demonstrate that MCOW outperforms existing baselines in shape attribute binding and text attribute binding.
+            Additionally, we show that MCOW can be seamlessly transferred to domain-specific diffusion models such as DiffusionSat for satellite image synthesis.
+            Despite its effectiveness, MCOW is limited by its reliance on DDIM-based diffusion models and its assumption of context independence 
+            during subject generation. We discuss these challenges and highlight potential future directions to further improve compositional 
+            generalization in generative models.
           </p>
         </div>
       </div>
@@ -118,26 +118,58 @@
   </div>
 </section>
 
-
-<section class="section">
+<section class="hero teaser">
   <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="columns is-centered">
-        <div class="column is-full-width">
-          <h2 class="title is-3">MCOW on Specific Domain</h2>
-            <p>
-              The training-free framework allows MCOW to be transferred to the generative model of specdic domains. Here is an example for satellite imagery generation.
-            </p>
-            <img src="static/images/domain_transfer.jpg" alt="Description of image" style="width:120%; border-radius:10px;">
-            <p>
-              <b>Left</b>: traditional generative models such as SD2 exhibit limitations in generating high-quality satellite imagery. <b>Mid</b>: DiffusionSat tailored for this domain struggles with compositional generation. <b>Right</b>: applying MCOW framework on DiffusionSat successfully overcomes these challenges and demonstrates superior performance in compositional satellite image synthesis.
-            </p> 
-        </div>
-      </div>
+    <h2 class="title is-3">Method</h2>
+    <div class="hero-body">
+      <img src="static/images/pipeline.png" alt="Description of image" style="width:120%; border-radius:10px;">
+    <p style="font-size: 1rem; color: #555; max-width: 900px; margin: 0.8em auto 0; line-height: 1.5;">
+      Overview of the MCOW pipeline. Given a compositional prompt (e.g., <i>A realistic photograph of a cat and a dog sitting together 
+        in a cozy outdoor setting during sunset</i>), MCOW independently generates each subject and composes them on a gray background (Image Initialization). 
+        During Cyclic Diffusion, ground-truth subject latents are repeatedly injected to preserve identity. 
+        The final image is obtained via forward diffusion from a stabilized latent.
+      </p>
+      
     </div>
   </div>
 </section>
 
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">MCOW on Specific Domain</h2>
+    <div class="hero-body">
+      <img src="static/images/domain_transfer.jpg" alt="Description of image" style="width:120%; border-radius:10px;">
+    <p style="font-size: 1rem; color: #555; max-width: 900px; margin: 0.8em auto 0; line-height: 1.5;">
+      <b>Left</b>: traditional generative models such as SD2 exhibit limitations in generating high-quality satellite imagery. 
+      <b>Mid</b>: DiffusionSat tailored for this domain struggles with compositional generation. 
+      <b>Right</b>: applying MCOW framework on DiffusionSat successfully overcomes these challenges and demonstrates superior performance 
+      in compositional satellite image synthesis.
+      </p>
+      
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Shortages</h2>
+    <div class="hero-body">
+      <img src="static/images/shortage1.jpg" alt="Description of image" style="width:120%; border-radius:10px;">
+      <p style="font-size: 1rem; color: #555; max-width: 900px; margin: 0.8em auto 0; line-height: 1.5;">
+      MCOW may fail when automated segmentation misinterprets object semantics. There is a case where “red orange” is interpreted as pulp, 
+      leading to a loss of identity post-masking. Such issues are exacerbated in fully automated pipelines. 
+      However, with minimal human intervention, MCOW achieves accurate results.
+      </p>
+      <img src="static/images/numeracy.jpg" alt="Description of image" style="width:120%; border-radius:10px;">
+      <p style="font-size: 1rem; color: #555; max-width: 900px; margin: 0.8em auto 0; line-height: 1.5;">
+        The Generate-then-Compose paradigm gives MCOW a natural edge in handling numeracy tasks. There is a case that MCOW correctly generates “eight bottles,” 
+        preserving each object's integrity. In contrast, SD3 fails at this task. 
+        However, layout-to-image approaches may struggle to maintain quality when dealing with large numbers of objects—an open issue for future work.
+      </p>
+    </div>
+  </div>
+</section>
 
 <footer class="footer">
   <div class="container">
